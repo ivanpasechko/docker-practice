@@ -1,0 +1,5 @@
+vms/server/influxdb_data/
+vms/server/grafana_data/
+*.log
+__pycache__/
+.DS_Store
