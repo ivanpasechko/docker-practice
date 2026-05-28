@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb_server
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    restart: always
+
+  telegraf:
+    image: telegraf:alpine
+    container_name: telegraf_collector
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana_dashboard
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana
+    depends_on:
+      - influxdb
+    restart: always
